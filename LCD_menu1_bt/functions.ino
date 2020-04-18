@@ -8,8 +8,10 @@ void play_pause() {
   sendString();
   Serial.println(outString);
 
-  playPauseFlag = !playPauseFlag;
-  
   playPauseFlag ? display_play() : display_pause();   //display whether playing or Pausing
+
+  playPauseFlag = !playPauseFlag;
+
+
   delay(1500);
 }

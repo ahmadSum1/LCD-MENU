@@ -128,8 +128,8 @@ void parameterChange(int key) {
   if (currentScreen == 2 ) {
     //IE ratio
     increment = 1;
-    TH1 = 2;
-    TH2 = 5;
+    TH1 = 5;
+    TH2 = 2;
   }
   if (currentScreen == 3) {
     //rpm

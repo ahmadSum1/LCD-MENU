@@ -22,7 +22,8 @@ void play_pause() {
            "*" + String(parameters_set[2]);
     Serial.println(cmd);
   }
-  playPauseFlag = !playPauseFlag;
   playPauseFlag ? display_play() : display_pause();
+  playPauseFlag = !playPauseFlag;
+
   delay(1500);
 }
