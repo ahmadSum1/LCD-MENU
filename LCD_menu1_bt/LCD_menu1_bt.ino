@@ -20,17 +20,37 @@ float parameters[numOfScreens] = { 0, 1.0, 2, 8, 0};
 
 //global variable for set values
 float parameters_set[numOfScreens] = { 0, 1.0, 2, 8, 0}; //mode(0~1) ins_speed(1.0-11.0), ratio(2-5), rpm(8-20), volume(0-100)%
-int IV_menus [] = {true, true, true, false, true };
-int RPM_menus [] = {true, false, false, true, true };
+
+//relevant menu items in accordance with the respective modes
+int IV_menus [] =  {true, true, true, false, true };    //mood_select(✔), Ins_speed(✔), IE_ratio(✔), RPM(✖), Volume(✔)
+int RPM_menus [] = {true, false, false, true, true };   //mood_select(✔), Ins_speed(✖), IE_ratio(✖), RPM(✔), Volume(✔)
 
 bool playPauseFlag = true;
-String cmd = "";
+
+///////////////////////BT Codes//////////
+#include <SoftwareSerial.h>
+
+SoftwareSerial mySerial(9, 10);
+
+//Parameters to be sent
+#define start   playPauseFlag
+#define vol     parameters_set[4]     //Tidal volume. Range 0-600
+#define rpm     parameters_set[3]     //Breathing cycle. Range 8-20
+#define iSpeed  parameters_set[1]     //Inhalation Speed.. Range 0.0-11.0
+#define v       parameters_set[2]     //IV Ratio. Range 2-10
+
+String outString = "";                //Data string that goes to slave module
+
+///////////////////BT///////////////////
+
+
 
 void setup() {
+  BT_setup();
+
   for (int i = 0; i < numOfInputs; i++) {
     pinMode(inputPins[i], INPUT_PULLUP);
   }
-  Serial.begin(9600);
   lcd.init();   //if u get error, change to lcd.begin()
   lcd.backlight();
 
@@ -43,14 +63,13 @@ void setup() {
 }
 
 void loop() {
+  ///////////////////BT///////////////////
+  BT_loop();
+  ///////////////////BT///////////////////
+
   setInputFlags();
   resolveInputFlags();
 
-  //  for (int i = 0; i < numOfScreens; i++) {
-  //    Serial.print(parameters_set[i]);
-  //    Serial.print("  ");
-  //  }
-  //  Serial.println();
 }
 
 void setInputFlags() {
@@ -150,7 +169,7 @@ void parameterChange(int key) {
     parameters[currentScreen] -= increment;
   }
 }
-//set the value on screen
+//set the value on screen to global variables
 void parameterSet() {
   parameters_set[currentScreen] = parameters[currentScreen];
   display_confirm();
