@@ -87,7 +87,7 @@ void inputAction(int button) {
     if (currentScreen >= numOfScreens - 1) {
       currentScreen = 0;
     } else {
-      get_nextMenu(currentScreen++);
+      currentScreen = get_nextMenu(currentScreen++);
     }
 
     resetScreen();        //reset screen parameters upon page change
@@ -125,7 +125,7 @@ void parameterChange(int key) {
     TH1 = 11;
     TH2 = 1;
   }
-    if (currentScreen == 2 ) {
+  if (currentScreen == 2 ) {
     //IE ratio
     increment = 1;
     TH1 = 2;
